@@ -18,7 +18,7 @@ export default function AddProjectModal() {
     const submitNewProject = (event: React.FormEvent) => {
         event.preventDefault();
         // submit the form here, using the name and date values
-        if(name.trim() == ""){
+        if(name.length == 0){
             console.log("Name can't be empty");
         }
 
@@ -28,7 +28,9 @@ export default function AddProjectModal() {
             console.log("Name can't be empty");
         }
 
-        addProject(name, date);
+        const response = addProject(name, date);
+
+        console.log(response);
     };
 
     return (   

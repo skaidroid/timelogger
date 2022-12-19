@@ -36,9 +36,9 @@ export default function AddNewLogModal() {
         // submit the form here, using the name and date values
         // console.log("submit data", {projectNames});
 
-        // if(stateTimelog?.description.trim() == ""){
-        //     console.log("Description can't be empty");
-        // }
+        if(stateTimelog?.description.trim() == ""){
+            console.log("Description can't be empty");
+        }
 
         console.log(stateTimelog)
 

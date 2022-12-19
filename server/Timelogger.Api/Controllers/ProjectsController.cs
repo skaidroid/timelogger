@@ -31,6 +31,14 @@ namespace Timelogger.Api.Controllers
 			return Ok(_context.Projects);
 		}
 
+			// GET api/projects
+		[HttpPost]
+		public IActionResult filterProjects([FromBody] string search)
+		{
+			return Ok(_context.Projects.Where(p => p.Name.Contains(search)));
+		}
+
+
 		//filter only names
 		[HttpGet("getActiveNames")]
 		public IActionResult GetAllProjectNames()

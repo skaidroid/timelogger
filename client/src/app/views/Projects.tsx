@@ -1,14 +1,28 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Table from "../components/tables/Table";
 import Modal from "../components/modals/Modal";
 import openModal from "../components/modals/openModal";
 import AddProjectModal from "../components/modals/AddProjectModal";
 import AddNewLogModal from "../components/modals/AddNewLogModal";
+import { getAll } from "../api/projects";
+import { Project } from "../models/project";
+
 
 
 export default function Projects() {
     const { isProjectModOpen, toggleProjectMod } = openModal();
     const { isTaskModOpen, toggleTaskMod } = openModal();
+    //Projects data
+    const [projects, setProjects] = useState<Project[]>([]);
+    useEffect( () => { getAll().then((projects) => {setProjects(projects)}) } , [isProjectModOpen == false])
+    
+    //search data
+    const [searchInput, setSearchInput] = useState<string>('');
+    const searchProjects = (event: React.FormEvent) => {
+        event.preventDefault();
+        console.log("test search data", searchInput);
+
+    };
 
     return (
         <>  
@@ -35,8 +49,10 @@ export default function Projects() {
                 </div>
 
                 <div className="w-1/2 flex justify-end">
-                    <form>
+                    <form  onSubmit={searchProjects}>
                         <input
+                            value={searchInput}
+                            onChange={(e:  React.ChangeEvent<HTMLInputElement>) => { setSearchInput(e.target.value)}}
                             className="border rounded-full py-2 px-4"
                             type="search"
                             placeholder="Search"
@@ -52,7 +68,7 @@ export default function Projects() {
                 </div>
             </div>
 
-            <Table />
+            <Table projects={projects} />
         </>
     );
 }
