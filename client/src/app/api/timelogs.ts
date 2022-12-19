@@ -1,5 +1,3 @@
-import { Timelog } from "../models/timelog";
-
 const BASE_URL = "http://localhost:3001/api";
 
 export async function getTimelog() {
@@ -13,8 +11,10 @@ export async function getTimelogById(projectId: number) {
     return response.json();
 }
 
-export async function addNewTimelog(timelog: Timelog){
-    console.log(timelog)
-    return null;
+export async function addNewTimelog(tielog: {projectId: number, description: string, startTime: Date, endTime: Date}){
+    const response = await fetch(`${BASE_URL}/timelogs/addTimelog`, 
+    { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(tielog)});
+
+    return response.json();
 }
 

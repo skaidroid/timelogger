@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DatePicker from "react-date-picker";
+import DateTimePicker from 'react-datetime-picker';
 import { addProject } from "../../api/projects";
 
 
@@ -18,8 +18,6 @@ export default function AddProjectModal() {
     const submitNewProject = (event: React.FormEvent) => {
         event.preventDefault();
         // submit the form here, using the name and date values
-        console.log("submit data");
-
         if(name.trim() == ""){
             console.log("Name can't be empty");
         }
@@ -44,7 +42,7 @@ export default function AddProjectModal() {
                 <br />
                 <br />
                 <label htmlFor="deadline"> Deadline: 
-                    <DatePicker className="datepicker-style" name="deadline" value={date} onChange={handleDateChange} />
+                    <DateTimePicker className="datepicker-style" name="deadline" value={date} onChange={handleDateChange} />
                 </label>
                 <br />
                 <br />

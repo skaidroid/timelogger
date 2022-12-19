@@ -8,8 +8,8 @@ export async function getAll() {
     return response.json();
 }
 
-export async function getProjectNames() {
-    const response = await fetch(`${BASE_URL}/projects/getNames`);
+export async function getActiveProjectNames() {
+    const response = await fetch(`${BASE_URL}/projects/getActiveNames`);
     
     return response.json();
 }

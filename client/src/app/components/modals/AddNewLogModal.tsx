@@ -1,65 +1,88 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "react-date-picker";
-import { getProjectNames } from "../../api/projects";
-import { Timelog } from "../../models/timelog";
+// import Dropdown from '../dropdown/Dropdown';
+import DateTimePicker from 'react-datetime-picker';
+import { getActiveProjectNames } from "../../api/projects";
+import { addNewTimelog } from "../../api/timelogs";
+import { ActiveProjects } from "../../models/activeProjects";
 
 
 export default function AddNewLogModal() {
-    const [timelogData, setTimeLogData] = useState<Timelog>();
-    const [date, setDate] = useState(new Date());
-    const [projectNames, setProjectNames] = useState<string[]>([]);    
+    // const options = ['Option 1', 'Option 2', 'Option 3'];
 
+    // const [timelogData, setTimeLogData] = useState<Timelog>();
+    // const [date, setDate] = useState(new Date());
+    const [projectNames, setProjectNames] = useState<ActiveProjects[]>([]);    
+    const [selectedId] = useState<string>();
 
-    useEffect( () => {getProjectNames().then( (projectNames) => {setProjectNames(projectNames)})});
-
+    
+    const [stateTimelog, setTimelogState] = useState({
+        projectId: -1,
+        description: "",
+        startTime: new Date(),
+        endTime: new Date()
+        
+    });
+    useEffect( () => {getActiveProjectNames().then( (projectNames) => {setProjectNames(projectNames)})}, []);
   
-    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTimeLogData(timelogData);
-        console.log(event);
-    };
-
-    const handleDateChange = (selectedDate: Date) => {
-        setDate(selectedDate);
+    const handleChange = (dataName: string, dataValue : Date|string|number) => {
+        setTimelogState({
+            ...stateTimelog,
+            [dataName]: dataValue
+          });
     };
 
     const submitNewProject = (event: React.FormEvent) => {
         event.preventDefault();
         // submit the form here, using the name and date values
-        console.log("submit data");
+        // console.log("submit data", {projectNames});
 
-        if(timelogData?.description.trim() == ""){
-            console.log("Description can't be empty");
-        }
+        // if(stateTimelog?.description.trim() == ""){
+        //     console.log("Description can't be empty");
+        // }
 
-        const now = new Date();
+        console.log(stateTimelog)
 
-        if(date < now){
-            console.log("Name can't be empty");
-        }
+        // const now = new Date();
+
+        // if(state.endTime < now){
+        //     console.log("Name can't be empty");
+        // }
+        addNewTimelog(stateTimelog);
 
     };
 
     return (   
         <>
             <h3> Add New Log/Task</h3>
-            {projectNames}
 
             <form onSubmit={submitNewProject}>
-                <label htmlFor="name"> Select Project: 
-                    <input type="text" id="project" className="input-style" onChange={handleNameChange}></input>
-                </label>
+
+
+            <div>
+                <label htmlFor="dropdown">Select project:</label>
+                {/* handleChange("project",  e.target.value) */}
+                    <select id="dropdown" value={selectedId} onChange={(e:  React.ChangeEvent<HTMLSelectElement>) => handleChange("projectId",  Number(e.target.value))}>
+                        {projectNames.map(project => (
+                            <option key={project.id} value={project.id}>
+                            {project.name}
+                        </option>
+                    ))}
+            </select>
+            </div>
+                {/* <Dropdown items={projectNames} /> */}
+           
                 <br />
                 <label htmlFor="name"> Task Description: 
-                    <input type="text" id="description" className="input-style" onChange={handleNameChange}></input>
+                    <input type="text" id="description" name="description" className="input-style" onChange={(e:  React.ChangeEvent<HTMLInputElement>) => handleChange(e.target.name,  e.target.value)}></input>
                 </label>
                 <br />
                 <br />
                 <label htmlFor="deadline"> Start Time: 
-                    <DatePicker className="datepicker-style" name="start-time" value={date} onChange={handleDateChange} />
+                    <DateTimePicker className="datepicker-style" name="startTime" value={stateTimelog.startTime} onChange={(value : Date) => handleChange("startTime",  value)} />
                 </label>
                 <br />
                 <label htmlFor="deadline"> End Time: 
-                    <DatePicker className="datepicker-style" name="end-time" value={date} onChange={handleDateChange} />
+                    <DateTimePicker className="datepicker-style" name="endTime" value={stateTimelog.endTime} onChange={(value : Date) => handleChange("endTime",  value)} />
                 </label>
                 
                 <br />

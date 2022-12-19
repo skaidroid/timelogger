@@ -32,10 +32,11 @@ namespace Timelogger.Api.Controllers
 		}
 
 		//filter only names
-		[HttpGet("getNames")]
+		[HttpGet("getActiveNames")]
 		public IActionResult GetAllProjectNames()
 		{
-			List<string> projectNames = _context.Projects.Select(p => p.Name).ToList();
+			
+			var projectNames = _context.Projects.Where(p => p.IsCompleted == false).Select(p => new { Id = p.Id.ToString(), Name = p.Name}).ToList();
 			return Ok(projectNames);
 		}
 
@@ -53,8 +54,6 @@ namespace Timelogger.Api.Controllers
 				throw new Exception("Project name can't be empty.");
 			}
 
-			//This is used to replace the database assigned IDs
-			_context.LastProjectId++;
 			newProject.Id = _context.LastProjectId;
 
 			//Seting data for new project

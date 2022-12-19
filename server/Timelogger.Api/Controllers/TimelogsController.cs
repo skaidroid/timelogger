@@ -33,7 +33,6 @@ namespace Timelogger.Api.Controllers
         public IActionResult AddTimelog([FromBody] Timelog newTimelog)
         {
 			//This is used to replace the database assigned IDs
-			_context.LastTimelogsId++;
 			newTimelog.Id = _context.LastTimelogsId;
 			
 			//TODO: Check if task lasted 30min or more and that required field are correct 
