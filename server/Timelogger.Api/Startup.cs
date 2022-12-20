@@ -77,16 +77,16 @@ namespace Timelogger.Api
 				Id = 1,
 				Name = "e-conomic Interview",
 				TotalHours = 60,
-				Deadline = temp,
+				Deadline = temp.AddDays(5),
 				IsCompleted = false
 
 			};
 			var testProject2 = new Project
 			{
 				Id = 2,
-				Name = "Test something",
+				Name = "Learn React",
 				TotalHours = 120,
-				Deadline = temp,
+				Deadline = temp.AddDays(20),
 				IsCompleted = false
 
 			};
@@ -95,7 +95,7 @@ namespace Timelogger.Api
 				Id = 3,
 				Name = "Jumbo",
 				TotalHours = 0, 	
-				Deadline = temp,
+				Deadline = temp.AddMonths(2),
 				IsCompleted = false
 
 			};

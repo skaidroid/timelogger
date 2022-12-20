@@ -6,22 +6,33 @@ import AddProjectModal from "../components/modals/AddProjectModal";
 import AddNewLogModal from "../components/modals/AddNewLogModal";
 import { getAll } from "../api/projects";
 import { Project } from "../models/project";
-
-
+import Tabletimelogs from "../components/tables/Tabletimelogs";
+import { getTimelogById } from "../api/timelogs";
+import { Timelog } from "../models/timelog";
 
 export default function Projects() {
     const { isProjectModOpen, toggleProjectMod } = openModal();
     const { isTaskModOpen, toggleTaskMod } = openModal();
+    
+    const [projectId, setProjectId] = useState(-1);
+
     //Projects data
     const [projects, setProjects] = useState<Project[]>([]);
     useEffect( () => { getAll().then((projects) => {setProjects(projects)}) } , [isProjectModOpen == false])
-    
+
+    //Timelog data
+    const [timelogs, setTimelog] = useState<Timelog[]>([]);
+    useEffect( () => { getTimelogById(projectId).then((timelogs) => {setTimelog(timelogs)}) } , [projectId]);
+    //Use different hook for updating timelogs when new log is added we need to update projects since total time changed
+    useEffect( () => { 
+        getTimelogById(projectId).then((timelogs) => {setTimelog(timelogs)});
+        getAll().then((projects) => {setProjects(projects)});
+   } , [isTaskModOpen == false]);
+
     //search data
     const [searchInput, setSearchInput] = useState<string>('');
     const searchProjects = (event: React.FormEvent) => {
         event.preventDefault();
-        console.log("test search data", searchInput);
-
     };
 
     return (
@@ -68,7 +79,15 @@ export default function Projects() {
                 </div>
             </div>
 
-            <Table projects={projects} />
+            <Table  projects={projects} setProjects={setProjects}  projectId={projectId} setProjectId={setProjectId}/>
+            { //check if an project is selected before showing the user table with logs for the project
+            (projectId != -1) && 
+            <>
+            <h4 className="mt-5">Project name: {projects.find(p => p.id == projectId)?.name}</h4>
+            <Tabletimelogs timelogs={timelogs} />
+            </>
+            
+            }
         </>
     );
 }

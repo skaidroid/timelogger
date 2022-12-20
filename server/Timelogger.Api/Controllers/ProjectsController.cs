@@ -73,5 +73,14 @@ namespace Timelogger.Api.Controllers
 			_context.SaveChanges();
             return Ok(_context.Projects);
         }
+
+		[HttpPost("updateProject")]
+        public IActionResult UpdateProject([FromBody] Project project)
+        {
+			_context.Projects.Update(project);
+			_context.SaveChanges();
+
+            return Ok(_context.Projects);
+        }
 	}
 }

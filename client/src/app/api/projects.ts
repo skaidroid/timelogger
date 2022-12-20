@@ -1,4 +1,4 @@
-// import { Project } from "../models/project";
+import { Project } from "../models/project";
 
 const BASE_URL = "http://localhost:3001/api";
 
@@ -21,3 +21,9 @@ export async function addProject(name: string, deadline: Date){
     return response.json();
 }
 
+export async function updateProject(project: Project){
+    const response = await fetch(`${BASE_URL}/projects/updateProject`, 
+    { method: 'POST', headers: {'Content-Type': 'application/json'}, body:  JSON.stringify(project)});
+
+    return response.json();
+}

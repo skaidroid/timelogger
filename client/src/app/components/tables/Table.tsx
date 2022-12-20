@@ -1,48 +1,55 @@
-// import { format } from "date-fns";
-import React, { useState } from "react";
-// import { getAll } from "../../api/projects";
+import React, {useState } from "react";
+import { updateProject } from "../../api/projects";
+import { dateFormating, totalTimeFormating } from "../../helpers/format";
 import { Project } from "../../models/project";
-import Tabletimelogs from "./Tabletimelogs";
+
 interface PropList {
     projects: Project[]
+    setProjects: (value: Project[]) => void
+    projectId: number
+    setProjectId: (value: number) => void
 }
-
-export default function Table(props: PropList) {
-    const [projectId, setProjectId] = useState(-1);
-    // let sortedProjects = [...projects];
-
-    // TODO: add ability to sort in asc and des order 
-    //For sorting deadlines
-    // sortedProjects.sort((a, b) => {
-    //     if (a.deadline > b.deadline) {
-    //       return -1;
-    //     }
-    //     if (a.deadline < b.deadline) {
-    //       return 1;
-    //     }
-    //     return 0;
-    //   });
+export default function Table (prop: PropList) {
+    const [sortOrder, setSortOrder] = useState(1);
 
 
-    
-
-    function getTimelogs(project: Project){
-        console.log("set project is", project.id);
-        setProjectId(project.id);
+    function sortByProperty(sortProperty : string){        
+      const sortedList = prop.projects.sort((a , b) => (a[sortProperty] > b[sortProperty]) ? 1*sortOrder : -1*sortOrder);    
+      //-1 changes sort order
+      setSortOrder(sortOrder * (-1));
+      prop.setProjects(sortedList);
     }
-    
+
+    //Update if project is completed if projcet is complited
+    function updateCompletness(index : number){
+        const newProject = prop.projects[index];
+        newProject.isCompleted = !newProject.isCompleted;
+        updateProject(newProject).then((projects) => {prop.setProjects(projects)});
+    }
+
+    //get all time lof for the project by seting projectId which will update the table with logs
+    function getTimelogs(project: Project){
+        prop.setProjectId(project.id);
+    }
     
     return ( <> 
         <table className="table-fixed w-full">
             <thead className="bg-gray-200">
                 <tr>
                     <th className="border px-4 py-2 w-12">#</th>
-                    <th className="border px-4 py-2">Project Name</th>
-                    <th className="border px-4 py-2">Total Hours</th>
                     <th className="border px-4 py-2">
-                        <button type="button" onClick={() => console.log("print ")}>
-                        {/* setProjects(sortedProjects) */}
-                            Deadline
+                        <button type="button" onClick={() => { sortByProperty('name'); }}>
+                            Project Name <i className=""> [sort] </i>
+                        </button> 
+                    </th>
+                    <th className="border px-4 py-2">
+                        <button type="button" onClick={() => { sortByProperty('totalHours'); }}>
+                            Total Time <i className=""> [sort] </i>
+                        </button>       
+                    </th>
+                    <th className="border px-4 py-2">
+                        <button type="button" onClick={() => { sortByProperty('deadline'); }}>
+                            Deadline <i className=""> [sort] </i>
                         </button>
                     </th>
                     <th className="border px-4 py-2">Is Completed</th>
@@ -50,17 +57,15 @@ export default function Table(props: PropList) {
                 </tr>
             </thead>
             <tbody>
-                { props.projects.map((project, index) => (
+                {   prop.projects.map((project, index) => (
                     <tr key={project.id}  onClick={() => {getTimelogs(project)} }>
                         <td className="border px-4 py-2 w-12">{index + 1}</td>
                         <td className="border px-4 py-2">{project.name}</td>
-                        <td className="border px-4 py-2">{project.totalHours}</td>
-                        <td className="border px-4 py-2">{project.deadline}</td>
-                        <th className="border px-4 py-2">
-                            <label>
-                            <input type="checkbox" checked={project.isCompleted} onChange={(e:  React.ChangeEvent<HTMLInputElement>) => {console.log("update project by Id ", e.target.value ); project.isCompleted = !project.isCompleted}} />
-                                Is project complited
-                             </label>
+                        <td className="border px-4 py-2"><b>{totalTimeFormating(project.totalHours)}</b></td>
+                        <td className="border px-4 py-2">{dateFormating(project.deadline)}</td>
+                        <th className="border px-4 py-1">
+                            <input type="checkbox" checked={project.isCompleted} onChange={() => {updateCompletness(index);}} />
+                            <label className="mx-2"> {project.isCompleted ? 'yes' : 'no'} </label>
                         </th>
                     </tr>
                 )) } 
@@ -68,10 +73,7 @@ export default function Table(props: PropList) {
             </tbody>
         </table>
             
-            { //check if an project is selected before showing the user table with logs for the project
-            (projectId != -1) &&
-                <Tabletimelogs projectId = {projectId} />
-            }
+        
         </> 
     );
 }

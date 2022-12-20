@@ -7,14 +7,6 @@ import { ActiveProjects } from "../../models/activeProjects";
 
 
 export default function AddNewLogModal() {
-    // const options = ['Option 1', 'Option 2', 'Option 3'];
-
-    // const [timelogData, setTimeLogData] = useState<Timelog>();
-    // const [date, setDate] = useState(new Date());
-    const [projectNames, setProjectNames] = useState<ActiveProjects[]>([]);    
-    const [selectedId] = useState<string>();
-
-    
     const [stateTimelog, setTimelogState] = useState({
         projectId: -1,
         description: "",
@@ -22,8 +14,14 @@ export default function AddNewLogModal() {
         endTime: new Date()
         
     });
-    useEffect( () => {getActiveProjectNames().then( (projectNames) => {setProjectNames(projectNames)})}, []);
   
+
+    const [projectNames, setProjectNames] = useState<ActiveProjects[]>([]);    
+    const [selectedId] = useState<string>();
+
+    useEffect( () => {getActiveProjectNames().then( (projectNames) => {setProjectNames(projectNames); handleChange('projectId', Number(projectNames[0].id));})}, []);
+  
+
     const handleChange = (dataName: string, dataValue : Date|string|number) => {
         setTimelogState({
             ...stateTimelog,
@@ -33,30 +31,18 @@ export default function AddNewLogModal() {
 
     const submitNewProject = (event: React.FormEvent) => {
         event.preventDefault();
-        // submit the form here, using the name and date values
-        // console.log("submit data", {projectNames});
 
-        if(stateTimelog?.description.trim() == ""){
-            console.log("Description can't be empty");
+        if(stateTimelog.projectId == -1 ){
+            handleChange('projectId', projectNames[0].id)
         }
 
-        console.log(stateTimelog)
-
-        // const now = new Date();
-
-        // if(state.endTime < now){
-        //     console.log("Name can't be empty");
-        // }
         addNewTimelog(stateTimelog);
-
     };
 
     return (   
         <>
             <h3> Add New Log/Task</h3>
-
             <form onSubmit={submitNewProject}>
-
 
             <div>
                 <label htmlFor="dropdown">Select project:</label>
@@ -68,9 +54,7 @@ export default function AddNewLogModal() {
                         </option>
                     ))}
             </select>
-            </div>
-                {/* <Dropdown items={projectNames} /> */}
-           
+            </div>           
                 <br />
                 <label htmlFor="name"> Task Description: 
                     <input type="text" id="description" name="description" className="input-style" onChange={(e:  React.ChangeEvent<HTMLInputElement>) => handleChange(e.target.name,  e.target.value)}></input>
