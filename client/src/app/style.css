@@ -27,19 +27,32 @@
   .modal-box {
     display: block;
     background: white;
-    width: 70%;
-    height: 70%;
+    width: 50%;
+    max-height: 70%;
     padding: 1rem;
     border-radius: 1rem;
   }
 
   .input-style {
-    width: 200px;
+    width: 300px;
     border-radius: 0px;
     border-width: 1px;
     border-style: solid;
     border-color: #000;
     margin: 5px;
+  }
+
+  .input-textbox {
+    min-width: 500px;
+    border-radius: 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #000;
+    margin: 5px;
+  }
+
+  .tetbox-lable {
+    vertical-align: top;
   }
 
   .datepicker-style {

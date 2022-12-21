@@ -54,11 +54,11 @@ namespace Timelogger.Api.Controllers
 			DateTime todaysDate = DateTime.Now;
 	
 			if(newProject.Deadline < todaysDate){
-				throw new Exception("Project deadline can't be in the past.");
+                return BadRequest("Project deadline can't be in the past.");
 			}
 
 			if(String.IsNullOrEmpty(newProject.Name)){
-				throw new Exception("Project name can't be empty.");
+                return BadRequest("Project name can't be empty.");
 			}
 
 			newProject.Id = _context.LastProjectId;

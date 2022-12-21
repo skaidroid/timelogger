@@ -15,7 +15,7 @@ namespace Timelogger.Api.Tests
 
             Assert.AreEqual("Hello Back!", actual);
         }
-
+        /*
         [TestMethod]
         public void ProjectDeadline_ShouldNotBe_InPast()
         {
@@ -25,7 +25,8 @@ namespace Timelogger.Api.Tests
 
             Assert.AreEqual("Project deadline can't be in the past.", actual);
         }
-
+        */
+        /*
         [TestMethod]
         public void TestStartDateBeforeEndDate()
         {
@@ -39,7 +40,7 @@ namespace Timelogger.Api.Tests
             // Assert
             // Assert.IsTrue(result);
         }
-
+        */
 
     }
 } 

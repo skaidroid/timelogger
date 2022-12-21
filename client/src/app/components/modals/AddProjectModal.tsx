@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import DateTimePicker from "react-datetime-picker";
 import { addProject } from "../../api/projects";
 
-
-export default function AddProjectModal() {
+interface ModalType {
+    toggle: () => void;
+  }
+export default function AddProjectModal(modal : ModalType) {
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
   
@@ -23,12 +25,15 @@ export default function AddProjectModal() {
             return;
         }
 
-        if(date < (new Date())){
-            console.log("Date can't be in the past");
-            return;
-        }
+        // if(date < (new Date())){
+        //     console.log("Date can't be in the past");
+        //     return;
+        // }
 
-        const response = addProject(name, date);
+        const response = addProject(name, date)
+        modal.toggle();
+        // .then(() => console.log("close window"))
+        // .catch((e) => console.log(e))
 
         console.log(response);
     };
@@ -38,12 +43,12 @@ export default function AddProjectModal() {
             <h3> Add New Project</h3>
 
             <form onSubmit={submitNewProject}>
-                <label htmlFor="name"> Project Name: 
+                <label htmlFor="name"> <b>Project Name:</b>
                     <input type="text" id="project" className="input-style" value={name} onChange={handleNameChange}></input>
                 </label>
                 <br />
                 <br />
-                <label htmlFor="deadline"> Deadline: 
+                <label htmlFor="deadline"><b>Deadline:</b>  
                     <DateTimePicker className="datepicker-style" name="deadline" value={date} onChange={handleDateChange} />
                 </label>
                 <br />

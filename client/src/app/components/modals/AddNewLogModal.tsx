@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-// import Dropdown from '../dropdown/Dropdown';
 import DateTimePicker from 'react-datetime-picker';
 import { getActiveProjectNames } from "../../api/projects";
 import { addNewTimelog } from "../../api/timelogs";
 import { ActiveProjects } from "../../models/activeProjects";
 
-
-export default function AddNewLogModal() {
+interface ModalType {
+    toggle: () => void;
+}
+export default function AddNewLogModal(modal : ModalType) {
     const [stateTimelog, setTimelogState] = useState({
         projectId: -1,
         description: "",
         startTime: new Date(),
         endTime: new Date()
-        
     });
   
 
@@ -29,7 +29,7 @@ export default function AddNewLogModal() {
           });
     };
 
-    const submitNewProject = (event: React.FormEvent) => {
+    const submitNewTask = (event: React.FormEvent) => {
         event.preventDefault();
 
         if(stateTimelog.projectId == -1 ){
@@ -37,17 +37,19 @@ export default function AddNewLogModal() {
         }
 
         addNewTimelog(stateTimelog);
+        modal.toggle();
+        
     };
 
     return (   
         <>
-            <h3> Add New Log/Task</h3>
-            <form onSubmit={submitNewProject}>
+            <h2> Add New Log/Task</h2>
+            <form onSubmit={submitNewTask}>
 
             <div>
-                <label htmlFor="dropdown">Select project:</label>
+                <label htmlFor="dropdown"><b>Select project:</b></label>
                 {/* handleChange("project",  e.target.value) */}
-                    <select id="dropdown" value={selectedId} onChange={(e:  React.ChangeEvent<HTMLSelectElement>) => handleChange("projectId",  Number(e.target.value))}>
+                    <select className="ml-3" id="dropdown" value={selectedId} onChange={(e:  React.ChangeEvent<HTMLSelectElement>) => handleChange("projectId",  Number(e.target.value))}>
                         {projectNames.map(project => (
                             <option key={project.id} value={project.id}>
                             {project.name}
@@ -56,16 +58,16 @@ export default function AddNewLogModal() {
             </select>
             </div>           
                 <br />
-                <label htmlFor="name"> Task Description: 
-                    <input type="text" id="description" name="description" className="input-style" onChange={(e:  React.ChangeEvent<HTMLInputElement>) => handleChange(e.target.name,  e.target.value)}></input>
+                <label htmlFor="name"> <b className="tetbox-lable">Task Description:</b>
+                    <textarea id="description" name="description" className="input-textbox ml-4" onChange={(e:  React.ChangeEvent<HTMLTextAreaElement>) => handleChange(e.target.name,  e.target.value)}></textarea>
                 </label>
                 <br />
                 <br />
-                <label htmlFor="deadline"> Start Time: 
+                <label htmlFor="deadline"> <b>Start Time:</b> 
                     <DateTimePicker className="datepicker-style" name="startTime" value={stateTimelog.startTime} onChange={(value : Date) => handleChange("startTime",  value)} />
                 </label>
                 <br />
-                <label htmlFor="deadline"> End Time: 
+                <label htmlFor="deadline"> <b>End Time:</b> 
                     <DateTimePicker className="datepicker-style" name="endTime" value={stateTimelog.endTime} onChange={(value : Date) => handleChange("endTime",  value)} />
                 </label>
                 

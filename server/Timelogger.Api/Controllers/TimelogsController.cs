@@ -25,10 +25,7 @@ namespace Timelogger.Api.Controllers
 		[HttpGet("getTasksById/{projectId}")]
         public IActionResult GetTasksById(int projectId)
         {
-			if(projectId < 0){
-				throw new Exception("Invalid project Id");
-			}
-
+	
             return Ok(_context.Timelogs.Where(t => t.ProjectId == projectId));
         }
 
@@ -36,25 +33,25 @@ namespace Timelogger.Api.Controllers
         [HttpPost("addTimelog")]
         public IActionResult AddTimelog([FromBody] Timelog newTimelog)
         {
-			Project findProject = _context.Projects.First(p => p.Id == newTimelog.ProjectId);
+			Project findProject = _context.Projects.Where(p => p.Id == newTimelog.ProjectId).FirstOrDefault();
 			//check if project exists and if ids match
-			if(findProject == null || findProject.Id != newTimelog.ProjectId){
-				throw new Exception("Can't find the project.");
+			if(findProject == null){
+				return BadRequest("Can't find the project.");
 			}
 			//check if project is complited -  we don't want to all adding logs to completed projects
 			if(findProject.IsCompleted == true){
-				throw new Exception("Can't add timelogs to the complited project.");
+                return BadRequest("Can't add timelogs to the complited project.");
 			}
 
 			//check if end time is before start time and return error
 			if(newTimelog.EndTime < newTimelog.StartTime){
-				throw new Exception("End time can't be before start time.");
+                return BadRequest("End time can't be before start time.");
 			}
 			
 			newTimelog.TotalTime = (int)Math.Abs(newTimelog.EndTime.Subtract(newTimelog.StartTime).TotalMinutes);
 			//make sure that task is 30min or longer
 			if(newTimelog.TotalTime < 30){
-				throw new Exception("Total time of task needs to be 30min or longer.");
+                return BadRequest("Total time of task needs to be 30min or longer.");
 			}
 			
 			//Assign unique ID
