@@ -6,6 +6,7 @@ interface ModalType {
     toggle: () => void;
   }
 export default function AddProjectModal(modal : ModalType) {
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
   
@@ -21,26 +22,19 @@ export default function AddProjectModal(modal : ModalType) {
         event.preventDefault();
         // submit the form here, using the name and date values
         if(name.length == 0){
-            console.log("Name can't be empty");
-            return;
+            setErrorMessage("Name can't be empty.");
+        } else if(date < (new Date())){
+            setErrorMessage("Date can't be in the past");
+        } else {
+            addProject(name, date)
+            modal.toggle();
         }
 
-        // if(date < (new Date())){
-        //     console.log("Date can't be in the past");
-        //     return;
-        // }
-
-        const response = addProject(name, date)
-        modal.toggle();
-        // .then(() => console.log("close window"))
-        // .catch((e) => console.log(e))
-
-        console.log(response);
     };
 
     return (   
         <>
-            <h3> Add New Project</h3>
+            <h2><b>Add New Project</b></h2>
 
             <form onSubmit={submitNewProject}>
                 <label htmlFor="name"> <b>Project Name:</b>
@@ -57,8 +51,7 @@ export default function AddProjectModal(modal : ModalType) {
             </form>
 
             <div id="modal_errors" >
-                {/* {() && <p></p>} */}
-
+                {errorMessage}
             </div>
   
         </>

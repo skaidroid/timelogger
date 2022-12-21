@@ -8,6 +8,7 @@ interface ModalType {
     toggle: () => void;
 }
 export default function AddNewLogModal(modal : ModalType) {
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [stateTimelog, setTimelogState] = useState({
         projectId: -1,
         description: "",
@@ -36,14 +37,17 @@ export default function AddNewLogModal(modal : ModalType) {
             handleChange('projectId', projectNames[0].id)
         }
 
-        addNewTimelog(stateTimelog);
-        modal.toggle();
-        
+        if(stateTimelog.startTime > stateTimelog.endTime){
+            setErrorMessage("End time needs to be before start time");
+        } else {
+            addNewTimelog(stateTimelog);
+            modal.toggle();
+        }
     };
 
     return (   
         <>
-            <h2> Add New Log/Task</h2>
+            <h2><b>Add New Log/Task</b></h2>
             <form onSubmit={submitNewTask}>
 
             <div>
@@ -77,7 +81,7 @@ export default function AddNewLogModal(modal : ModalType) {
             </form>
 
             <div id="modal_errors" >
-
+                {errorMessage}
             </div>
   
         </>
