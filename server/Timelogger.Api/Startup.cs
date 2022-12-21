@@ -76,7 +76,7 @@ namespace Timelogger.Api
 			{
 				Id = 1,
 				Name = "e-conomic Interview",
-				TotalHours = 55,
+				TotalHours = 120,
 				Deadline = temp.AddDays(5),
 				IsCompleted = false
 
@@ -85,7 +85,7 @@ namespace Timelogger.Api
 			{
 				Id = 2,
 				Name = "Learn React",
-				TotalHours = 51,
+				TotalHours = 60,
 				Deadline = temp.AddDays(20),
 				IsCompleted = false
 
@@ -94,7 +94,7 @@ namespace Timelogger.Api
 			{
 				Id = 3,
 				Name = "Jumbo",
-				TotalHours = 54, 	
+				TotalHours = 30, 	
 				Deadline = temp.AddMonths(2),
 				IsCompleted = false
 
@@ -109,9 +109,9 @@ namespace Timelogger.Api
 				Id = 1,
 				ProjectId = 1,
 				Description = "Unit tests",
-				StartTime = temp,
-				EndTime = temp,
-				TotalTime = 55
+				StartTime = temp.AddHours(-10),
+				EndTime = temp.AddHours(-8),
+				TotalTime = 120
 			};
 
 			var testTimelog2 = new Timelog
@@ -119,9 +119,9 @@ namespace Timelogger.Api
 				Id = 2,
 				ProjectId = 2,
 				Description = "Unit tests2",
-				StartTime = temp,
-				EndTime = temp,
-				TotalTime = 51
+				StartTime = temp.AddHours(-25),
+				EndTime = temp.AddHours(-24),
+				TotalTime = 60
 			};
 
 			var testTimelog3 = new Timelog
@@ -129,9 +129,9 @@ namespace Timelogger.Api
 				Id = 3,
 				ProjectId = 3,
 				Description = "Unit tests 3",
-				StartTime = temp,
-				EndTime = temp,
-				TotalTime = 54
+				StartTime = temp.AddDays(-4),
+				EndTime = temp.AddDays(-4).AddMinutes(30),
+                TotalTime = 30
 			};
 
 			context.Timelogs.Add(testTimelog1);

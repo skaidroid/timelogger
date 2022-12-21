@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import DateTimePicker from "react-datetime-picker";
 import { addProject } from "../../api/projects";
+import { Project } from "../../models/project";
 
 interface ModalType {
     toggle: () => void;
+    proj: (value: Project[]) => void
   }
 export default function AddProjectModal(modal : ModalType) {
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -26,7 +28,7 @@ export default function AddProjectModal(modal : ModalType) {
         } else if(date < (new Date())){
             setErrorMessage("Date can't be in the past");
         } else {
-            addProject(name, date)
+            addProject(name, date).then((data) => modal.proj(data));
             modal.toggle();
         }
 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Timelogger.Entities;
 using System;
-using System.Globalization;
-using System.Collections.Generic;
+
 using System.Linq;
+
 
 namespace Timelogger.Api.Controllers
 {
@@ -55,7 +55,8 @@ namespace Timelogger.Api.Controllers
 	
 			if(newProject.Deadline < todaysDate){
                 return BadRequest("Project deadline can't be in the past.");
-			}
+
+            }
 
 			if(String.IsNullOrEmpty(newProject.Name)){
                 return BadRequest("Project name can't be empty.");

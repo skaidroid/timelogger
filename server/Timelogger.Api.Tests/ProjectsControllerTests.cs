@@ -1,5 +1,12 @@
 using Timelogger.Api.Controllers;
 using NUnit.Framework;
+using Timelogger.Entities;
+using System;
+using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.IIS;
 
 namespace Timelogger.Api.Tests
 {
@@ -15,32 +22,54 @@ namespace Timelogger.Api.Tests
 
             Assert.AreEqual("Hello Back!", actual);
         }
-        /*
-        [TestMethod]
+        
+        [Test]
         public void ProjectDeadline_ShouldNotBe_InPast()
         {
             ProjectsController sut = new ProjectsController(null);
 
-            string actual = sut.addProject();
+            DateTime temp = DateTime.Now.Date;
+            var testProject = new Project
+            {
+                Name = "e-conomic Interview",
+                TotalHours = 0,
+                Deadline = temp.AddDays(-5),
+                IsCompleted = false
 
-            Assert.AreEqual("Project deadline can't be in the past.", actual);
+            };
+            var actual = sut.AddProject(testProject);
+
+            var data = new BadRequestObjectResult(actual);            
+            
+            
+            Assert.AreEqual(StatusCodes.Status400BadRequest, data.StatusCode);
+            //Assert.AreEqual("Project deadline can't be in the past.", (string)(test.Value));
         }
-        */
-        /*
-        [TestMethod]
-        public void TestStartDateBeforeEndDate()
-        {
-            // Arrange
-            DateTime startDate = new DateTime(2020, 1, 1);
-            DateTime endDate = new DateTime(2020, 1, 31);
+        
+ 
+        [Test]
+        public void TestProject_Name_Empty() { 
+   
+            ProjectsController sut = new ProjectsController(null);
 
-            // Act
-            // bool result = IsStartDateBeforeEndDate(startDate, endDate);
+            DateTime temp = DateTime.Now.Date;
+            var testProject = new Project
+            {
+                Name = "",
+                TotalHours = 0,
+                Deadline = temp.AddDays(5),
+                IsCompleted = false
 
-            // Assert
-            // Assert.IsTrue(result);
+            };
+            var actual = sut.AddProject(testProject);
+
+            var data = new BadRequestObjectResult(actual);
+
+
+            Assert.AreEqual(StatusCodes.Status400BadRequest, data.StatusCode);
+            //Assert.AreEqual("Project deadline can't be in the past.", (string)(test.Value));
         }
-        */
+        
 
     }
 } 

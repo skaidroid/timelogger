@@ -46,10 +46,10 @@ export default function Projects() {
 
     return (
         <>  
-            <Modal isOpen={isProjectModOpen} toggle={toggleProjectMod}> <AddProjectModal toggle={toggleProjectMod} /> </Modal>
+            <Modal isOpen={isProjectModOpen} toggle={toggleProjectMod}> <AddProjectModal toggle={toggleProjectMod} proj={setProjects} /> </Modal>
             
             <Modal isOpen={isTaskModOpen} toggle={toggleTaskMod}>
-                <AddNewLogModal toggle={toggleTaskMod} />
+                <AddNewLogModal toggle={toggleTaskMod} timelog={setTimelogs}/>
             </Modal>
 
             <div className="flex items-center my-6">

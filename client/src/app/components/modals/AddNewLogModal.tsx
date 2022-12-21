@@ -3,9 +3,11 @@ import DateTimePicker from 'react-datetime-picker';
 import { getActiveProjectNames } from "../../api/projects";
 import { addNewTimelog } from "../../api/timelogs";
 import { ActiveProjects } from "../../models/activeProjects";
+import { Timelog } from "../../models/timelog";
 
 interface ModalType {
     toggle: () => void;
+    timelog: (value: Timelog[]) => void
 }
 export default function AddNewLogModal(modal : ModalType) {
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -40,7 +42,7 @@ export default function AddNewLogModal(modal : ModalType) {
         if(stateTimelog.startTime > stateTimelog.endTime){
             setErrorMessage("End time needs to be before start time");
         } else {
-            addNewTimelog(stateTimelog);
+            addNewTimelog(stateTimelog).then((data)=> modal.timelog(data));
             modal.toggle();
         }
     };
