@@ -42,8 +42,7 @@ namespace Timelogger.Api.Controllers
 		//filter only names
 		[HttpGet("getActiveNames")]
 		public IActionResult GetAllProjectNames()
-		{
-			
+		{	
 			var projectNames = _context.Projects.Where(p => p.IsCompleted == false).Select(p => new { Id = p.Id.ToString(), Name = p.Name}).ToList();
 			return Ok(projectNames);
 		}

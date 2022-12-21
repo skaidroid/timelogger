@@ -76,7 +76,7 @@ namespace Timelogger.Api
 			{
 				Id = 1,
 				Name = "e-conomic Interview",
-				TotalHours = 60,
+				TotalHours = 55,
 				Deadline = temp.AddDays(5),
 				IsCompleted = false
 
@@ -85,7 +85,7 @@ namespace Timelogger.Api
 			{
 				Id = 2,
 				Name = "Learn React",
-				TotalHours = 120,
+				TotalHours = 51,
 				Deadline = temp.AddDays(20),
 				IsCompleted = false
 
@@ -94,7 +94,7 @@ namespace Timelogger.Api
 			{
 				Id = 3,
 				Name = "Jumbo",
-				TotalHours = 0, 	
+				TotalHours = 54, 	
 				Deadline = temp.AddMonths(2),
 				IsCompleted = false
 

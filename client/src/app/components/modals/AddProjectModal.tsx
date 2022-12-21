@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DateTimePicker from 'react-datetime-picker';
+import DateTimePicker from "react-datetime-picker";
 import { addProject } from "../../api/projects";
 
 
@@ -20,12 +20,12 @@ export default function AddProjectModal() {
         // submit the form here, using the name and date values
         if(name.length == 0){
             console.log("Name can't be empty");
+            return;
         }
 
-        const now = new Date();
-
-        if(date < now){
-            console.log("Name can't be empty");
+        if(date < (new Date())){
+            console.log("Date can't be in the past");
+            return;
         }
 
         const response = addProject(name, date);
@@ -52,6 +52,7 @@ export default function AddProjectModal() {
             </form>
 
             <div id="modal_errors" >
+                {/* {() && <p></p>} */}
 
             </div>
   

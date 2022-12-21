@@ -21,18 +21,27 @@ export default function Projects() {
     useEffect( () => { getAll().then((projects) => {setProjects(projects)}) } , [isProjectModOpen == false])
 
     //Timelog data
-    const [timelogs, setTimelog] = useState<Timelog[]>([]);
-    useEffect( () => { getTimelogById(projectId).then((timelogs) => {setTimelog(timelogs)}) } , [projectId]);
+    const [timelogs, setTimelogs] = useState<Timelog[]>([]);
+    
+    useEffect( () => { getTimelogById(projectId).then((timelogs) => {setTimelogs(timelogs)}) } , [projectId]);
+    
     //Use different hook for updating timelogs when new log is added we need to update projects since total time changed
     useEffect( () => { 
-        getTimelogById(projectId).then((timelogs) => {setTimelog(timelogs)});
+        getTimelogById(projectId).then((timelogs) => {setTimelogs(timelogs)});
         getAll().then((projects) => {setProjects(projects)});
    } , [isTaskModOpen == false]);
 
-    //search data
+    //search project names
     const [searchInput, setSearchInput] = useState<string>('');
     const searchProjects = (event: React.FormEvent) => {
         event.preventDefault();
+        if(searchInput.length > 0){
+            getAll().then((projects: Project[]) => {setProjects(projects.filter(p => {
+                return (p.name.toLowerCase()).includes(searchInput.toLowerCase());
+            }))});
+        } else {
+            getAll().then((projects) => {setProjects(projects)});
+        }
     };
 
     return (
@@ -60,6 +69,7 @@ export default function Projects() {
                 </div>
 
                 <div className="w-1/2 flex justify-end">
+                    {/* when user click on search search for all projects that contain search string in name*/}
                     <form  onSubmit={searchProjects}>
                         <input
                             value={searchInput}
@@ -84,7 +94,7 @@ export default function Projects() {
             (projectId != -1) && 
             <>
             <h4 className="mt-5">Project name: {projects.find(p => p.id == projectId)?.name}</h4>
-            <Tabletimelogs timelogs={timelogs} />
+            <Tabletimelogs timelogs={timelogs} setTimelogs={setTimelogs} />
             </>
             
             }

@@ -72,6 +72,8 @@ export default function Table (prop: PropList) {
        
             </tbody>
         </table>
+        {(prop.projects.length == 0) && <div>No projects.</div> }
+
             
         
         </> 
