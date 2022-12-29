@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.IIS;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Timelogger.Api.Tests
 {
@@ -23,8 +25,10 @@ namespace Timelogger.Api.Tests
             Assert.AreEqual("Hello Back!", actual);
         }
         
+        /*Add Project tests */
+
         [Test]
-        public void ProjectDeadline_ShouldNotBe_InPast()
+        public void AddProject_Deadline_InPastError()
         {
             ProjectsController sut = new ProjectsController(null);
 
@@ -39,16 +43,17 @@ namespace Timelogger.Api.Tests
             };
             var actual = sut.AddProject(testProject);
 
-            var data = new BadRequestObjectResult(actual);            
-            
-            
-            Assert.AreEqual(StatusCodes.Status400BadRequest, data.StatusCode);
-            //Assert.AreEqual("Project deadline can't be in the past.", (string)(test.Value));
+            BadRequestObjectResult brqObj = actual as BadRequestObjectResult;
+            string message = brqObj.Value.ToString();
+
+
+            Assert.AreEqual(StatusCodes.Status400BadRequest, brqObj.StatusCode);
+            Assert.AreEqual("Project deadline can't be in the past.", message);
         }
         
  
         [Test]
-        public void TestProject_Name_Empty() { 
+        public void AddProject_ProjectName_EmptyError() { 
    
             ProjectsController sut = new ProjectsController(null);
 
@@ -63,13 +68,42 @@ namespace Timelogger.Api.Tests
             };
             var actual = sut.AddProject(testProject);
 
-            var data = new BadRequestObjectResult(actual);
+            BadRequestObjectResult brqObj = actual as BadRequestObjectResult;
+            string message = brqObj.Value.ToString();
 
 
-            Assert.AreEqual(StatusCodes.Status400BadRequest, data.StatusCode);
-            //Assert.AreEqual("Project deadline can't be in the past.", (string)(test.Value));
+            Assert.AreEqual(StatusCodes.Status400BadRequest, brqObj.StatusCode);
+            Assert.AreEqual("Project name can't be empty.", message);
         }
+
+
+        [Test]
+        public void AddProject_Success()
+        {
+            var options = new DbContextOptionsBuilder<Timelogger.ApiContext>().UseInMemoryDatabase(databaseName: "AddProject_Success").Options;
+            var _context = new ApiContext(options);
+
+            ProjectsController sut = new ProjectsController(_context);
+            DateTime temp = DateTime.Now.Date;
+
+            var testProject = new Project
+            {
+                Name = "Project test",
+                TotalHours = 0,
+                Deadline = temp.AddDays(5),
+                IsCompleted = false
+            };
+  
+            var actual = sut.AddProject(testProject);
+            OkObjectResult result = actual as OkObjectResult;
         
+            Assert.AreEqual(StatusCodes.Status200OK, result.StatusCode);
+            Assert.IsNotNull(result.Value);
+        }
+
+
+      
+
 
     }
 } 
