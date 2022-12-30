@@ -26,12 +26,21 @@ export default function AddProjectModal(modal : ModalType) {
         if(name.length == 0){
             setErrorMessage("Name can't be empty.");
         } else if(date < (new Date())){
-            setErrorMessage("Date can't be in the past");
-        } else {
-            addProject(name, date).then((data) => modal.proj(data));
-            modal.toggle();
+            setErrorMessage("Project deadline can't be in the past.");
         }
-
+       else {
+            addProject(name, date).then((data) => {
+                console.log(typeof(data), 'type')
+                if(typeof(data) == 'object'){
+                    modal.proj(data);
+                    modal.toggle();             
+                } else if(typeof(data) == 'string'){
+                    setErrorMessage(data);   
+                } else {
+                    setErrorMessage("Something went wrong."); 
+                }
+            });    
+        }
     };
 
     return (   

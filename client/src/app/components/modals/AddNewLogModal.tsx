@@ -42,8 +42,17 @@ export default function AddNewLogModal(modal : ModalType) {
         if(stateTimelog.startTime > stateTimelog.endTime){
             setErrorMessage("End time needs to be before start time");
         } else {
-            addNewTimelog(stateTimelog).then((data)=> modal.timelog(data));
-            modal.toggle();
+            addNewTimelog(stateTimelog).then((data)=>
+            {
+                if(typeof(data) == 'object'){
+                    modal.timelog(data);
+                    modal.toggle();             
+                } else if(typeof(data) == 'string'){
+                    setErrorMessage(data);   
+                } else {
+                    setErrorMessage("Something went wrong."); 
+                }          
+            } );
         }
     };
 

@@ -17,21 +17,20 @@ export async function getActiveProjectNames() {
 export async function addProject(name: string, deadline: Date){
 
     try {
-        const response = await fetch(`${BASE_URL}/projects/addProject`, 
-        { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({name: name, deadline: deadline})});
+      const response = await fetch(`${BASE_URL}/projects/addProject`, 
+      { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({name: name, deadline: deadline})});
 
-        if (!response.ok) {
-          if (response.status === 400) {
-           
-            console.log(response)
+      if (!response.ok) {
+        if (response.status === 400) {
+          return response.text();
+        } 
 
-          }
-        } else {
-          return response.json();
-        }
-      } catch (error) {
-        console.log(error);
+      } else {
+        return response.json();
       }
+    } catch (error) {
+      console.log(error);
+    }
     
    
 }

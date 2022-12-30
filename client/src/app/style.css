@@ -66,8 +66,9 @@
   tbody > tr:hover {
     background-color: #a9a9a998;
   }
-  
-  /* tbody > tr .selected {
-    background-color: aqua;
+
+  #modal_errors {
+    color: red;
+    margin-top: 5px;
   }
-   */
+  

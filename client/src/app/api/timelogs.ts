@@ -17,7 +17,7 @@ export async function addNewTimelog(tielog: {projectId: number, description: str
         { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(tielog)});
         if (!response.ok) {
           if (response.status === 400) {
-            console.log(response)
+            return response.text();
           }
         } else {
           return response.json();
