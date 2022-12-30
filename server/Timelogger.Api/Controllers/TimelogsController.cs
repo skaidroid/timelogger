@@ -25,7 +25,6 @@ namespace Timelogger.Api.Controllers
 		[HttpGet("getTasksById/{projectId}")]
         public IActionResult GetTasksById(int projectId)
         {
-	
             return Ok(_context.Timelogs.Where(t => t.ProjectId == projectId));
         }
 
@@ -47,8 +46,14 @@ namespace Timelogger.Api.Controllers
 			if(newTimelog.EndTime < newTimelog.StartTime){
                 return BadRequest("End time can't be before start time.");
 			}
-			
-			newTimelog.TotalTime = (int)Math.Abs(newTimelog.EndTime.Subtract(newTimelog.StartTime).TotalMinutes);
+
+            //check if description is empty
+            if (newTimelog.Description.Length == 0)
+            {
+                return BadRequest("Description can't be empty.");
+            }
+
+            newTimelog.TotalTime = (int)Math.Abs(newTimelog.EndTime.Subtract(newTimelog.StartTime).TotalMinutes);
 			//make sure that task is 30min or longer
 			if(newTimelog.TotalTime < 30){
                 return BadRequest("Total time of task needs to be 30min or longer.");

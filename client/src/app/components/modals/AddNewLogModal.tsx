@@ -34,13 +34,15 @@ export default function AddNewLogModal(modal : ModalType) {
 
     const submitNewTask = (event: React.FormEvent) => {
         event.preventDefault();
-
-        if(stateTimelog.projectId == -1 ){
+        //if user does not select project from dropdown get first one 
+        if(stateTimelog.projectId == -1 && projectNames.length > 0){
             handleChange('projectId', projectNames[0].id)
         }
 
-        if(stateTimelog.startTime > stateTimelog.endTime){
-            setErrorMessage("End time needs to be before start time");
+        if(stateTimelog.description.length === 0){
+            setErrorMessage("Description can't be empty.");
+        } else if(stateTimelog.startTime > stateTimelog.endTime){
+            setErrorMessage("End time can't be before start time.");
         } else {
             addNewTimelog(stateTimelog).then((data)=>
             {

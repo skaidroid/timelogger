@@ -42,7 +42,6 @@ namespace Timelogger.Api.Tests
             OkObjectResult result = actual as OkObjectResult;
 
             Assert.AreEqual(StatusCodes.Status200OK, result.StatusCode);
-            Assert.IsNotNull(result.Value);
         }
 
         /*Add Timelogs tests */
@@ -95,6 +94,32 @@ namespace Timelogger.Api.Tests
 
             Assert.AreEqual(StatusCodes.Status400BadRequest, brqObj.StatusCode);
             Assert.AreEqual("Can't add timelogs to the complited project.", message);
+        }
+
+        [Test]
+        public void AddTimelog_DescriptionEmpty_Error()
+        {
+
+            var _context = CreateProjectTestData();
+            TimelogsController sut = new TimelogsController(_context);
+
+            DateTime temp = DateTime.Now.Date;
+            var testTimelog = new Timelog
+            {
+                ProjectId = 1,
+                Description = "",
+                StartTime = temp.AddHours(-10),
+                EndTime = temp.AddHours(-8),
+            };
+
+            var actual = sut.AddTimelog(testTimelog);
+
+            BadRequestObjectResult brqObj = actual as BadRequestObjectResult;
+            string message = brqObj.Value.ToString();
+
+
+            Assert.AreEqual(StatusCodes.Status400BadRequest, brqObj.StatusCode);
+            Assert.AreEqual("Description can't be empty.", message);
         }
 
         [Test]
@@ -242,7 +267,7 @@ namespace Timelogger.Api.Tests
             };
 
             _context.Timelogs.Add(testTimelog);
-
+            _context.LastTimelogsId = 2;
             _context.SaveChanges();
 
 
