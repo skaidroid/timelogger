@@ -81,11 +81,11 @@ export default function AddNewLogModal(modal : ModalType) {
                 <br />
                 <br />
                 <label htmlFor="deadline"> <b>Start Time:</b> 
-                    <DateTimePicker className="datepicker-style" name="startTime" value={stateTimelog.startTime} onChange={(value : Date) => handleChange("startTime",  value)} />
+                    <DateTimePicker className="datepicker-style" disableClock name="startTime" value={stateTimelog.startTime} onChange={(value : Date) => handleChange("startTime",  value)} />
                 </label>
                 <br />
                 <label htmlFor="deadline"> <b>End Time:</b> 
-                    <DateTimePicker className="datepicker-style" name="endTime" value={stateTimelog.endTime} onChange={(value : Date) => handleChange("endTime",  value)} />
+                    <DateTimePicker className="datepicker-style" disableClock name="endTime" value={stateTimelog.endTime} onChange={(value : Date) => handleChange("endTime",  value)} />
                 </label>
                 
                 <br />

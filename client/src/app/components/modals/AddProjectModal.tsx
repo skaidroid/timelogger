@@ -54,7 +54,7 @@ export default function AddProjectModal(modal : ModalType) {
                 <br />
                 <br />
                 <label htmlFor="deadline"><b>Deadline:</b>  
-                    <DateTimePicker className="datepicker-style" name="deadline" value={date} onChange={handleDateChange} />
+                    <DateTimePicker className="datepicker-style" name="deadline" value={date} disableClock onChange={handleDateChange} />
                 </label>
                 <br />
                 <br />
