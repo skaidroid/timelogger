@@ -12,7 +12,6 @@ interface PropList {
 export default function Table (prop: PropList) {
     const [sortOrder, setSortOrder] = useState(1);
 
-
     function sortByProperty(sortProperty : string){        
       const sortedList = prop.projects.sort((a , b) => (a[sortProperty] > b[sortProperty]) ? 1*sortOrder : -1*sortOrder);    
       //-1 changes sort order
@@ -33,7 +32,7 @@ export default function Table (prop: PropList) {
     }
     
     return ( <> 
-        <table className="table-fixed w-full">
+        <table className="w-full">
             <thead className="bg-gray-200">
                 <tr>
                     <th className="border px-4 py-2 w-12">#</th>
@@ -52,7 +51,7 @@ export default function Table (prop: PropList) {
                             Deadline <i className=""> [sort] </i>
                         </button>
                     </th>
-                    <th className="border px-4 py-2">Is Completed</th>
+                    <th className="border px-4 py-2 w-12">Completed</th>
 
                 </tr>
             </thead>
@@ -73,7 +72,7 @@ export default function Table (prop: PropList) {
             </tbody>
         </table>
         {(prop.projects.length == 0) && <div>No projects.</div> }
-
+        
             
         
         </> 

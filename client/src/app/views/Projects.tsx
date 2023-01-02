@@ -18,7 +18,7 @@ export default function Projects() {
 
     //Projects data
     const [projects, setProjects] = useState<Project[]>([]);
-    useEffect( () => { getAll().then((projects) => {setProjects(projects)}) } , [isProjectModOpen == false])
+    useEffect( () => { getAll().then((projects) => {setProjects(projects)}) } , [isProjectModOpen])
 
     //Timelog data
     const [timelogs, setTimelogs] = useState<Timelog[]>([]);
@@ -29,7 +29,7 @@ export default function Projects() {
     useEffect( () => { 
         getTimelogById(projectId).then((timelogs) => {setTimelogs(timelogs)});
         getAll().then((projects) => {setProjects(projects)});
-   } , [isTaskModOpen == false]);
+   } , [isTaskModOpen]);
 
     //search project names
     const [searchInput, setSearchInput] = useState<string>('');
@@ -73,7 +73,7 @@ export default function Projects() {
                     <form  onSubmit={searchProjects}>
                         <input
                             value={searchInput}
-                            onChange={(e:  React.ChangeEvent<HTMLInputElement>) => { setSearchInput(e.target.value)}}
+                            onChange={(e:  React.ChangeEvent<HTMLInputElement>) => { setSearchInput(e.target.value);}}
                             className="border rounded-full py-2 px-4"
                             type="search"
                             placeholder="Search"
