@@ -31,15 +31,6 @@ namespace Timelogger.Api.Controllers
 			return Ok(_context.Projects);
 		}
 
-		
-		/*	// GET api/projects
-		[HttpPost]
-		public IActionResult filterProjects([FromBody] string search)
-		{
-			return Ok(_context.Projects.Where(p => p.Name.Contains(search)));
-		}
-		*/
-
 		//filter only names
 		[HttpGet("getActiveNames")]
 		public IActionResult GetAllProjectNames()
@@ -66,7 +57,7 @@ namespace Timelogger.Api.Controllers
 			newProject.Id = _context.LastProjectId;
 
 			//Seting data for new project
-			newProject.TotalHours = 0;
+			newProject.TotalHours = TimeSpan.FromMinutes(0);
 			newProject.IsCompleted = false;
 			newProject.Deadline = newProject.Deadline.Date;
 

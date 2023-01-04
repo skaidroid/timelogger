@@ -53,9 +53,9 @@ namespace Timelogger.Api.Controllers
                 return BadRequest("Description can't be empty.");
             }
 
-            newTimelog.TotalTime = (int)Math.Abs(newTimelog.EndTime.Subtract(newTimelog.StartTime).TotalMinutes);
+            newTimelog.TotalTime = TimeSpan.FromMinutes(newTimelog.EndTime.Subtract(newTimelog.StartTime).TotalMinutes);
 			//make sure that task is 30min or longer
-			if(newTimelog.TotalTime < 30){
+			if(newTimelog.TotalTime < TimeSpan.FromMinutes(30)){
                 return BadRequest("Total time of task needs to be 30min or longer.");
 			}
 			

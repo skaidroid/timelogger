@@ -2,9 +2,9 @@ import Moment from 'moment';
 
 
 //Time is kept in minutes so we want to convert it to h and min when presenting it to the user
-export function totalTimeFormating(time: number){
-    let hours: number = Math.floor(time/60);
-    let minutes: number = time%60;
+export function totalTimeFormating(time: Date){
+    let hours: number = (time['days'] *24) + time['hours'];
+    let minutes: number = time['minutes'];
 
     let formatTime: string = (hours > 0 ? (hours + "h ") : "") + minutes + "min";
 

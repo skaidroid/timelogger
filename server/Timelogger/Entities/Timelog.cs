@@ -10,6 +10,6 @@ namespace Timelogger.Entities
         public string Description { get; set; }
 		public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-		public int TotalTime { get; set; }
+		public TimeSpan TotalTime { get; set; }
 	}
 }

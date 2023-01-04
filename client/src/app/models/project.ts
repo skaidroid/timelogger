@@ -2,6 +2,6 @@ export interface Project  {
     id: number;
     name: string;
     deadline: Date;
-    totalHours: number;
+    totalHours: Date;
     isCompleted: boolean;
   };

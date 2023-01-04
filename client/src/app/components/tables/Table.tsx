@@ -11,6 +11,7 @@ interface PropList {
 }
 export default function Table (prop: PropList) {
     const [sortOrder, setSortOrder] = useState(1);
+    // const [sortColumn, setSortColumn] = useState(null);
 
     function sortByProperty(sortProperty : string){        
       const sortedList = prop.projects.sort((a , b) => (a[sortProperty] > b[sortProperty]) ? 1*sortOrder : -1*sortOrder);    
@@ -19,7 +20,7 @@ export default function Table (prop: PropList) {
       prop.setProjects(sortedList);
     }
 
-    //Update if project is completed if projcet is complited
+    //Update if setProjectsproject is completed if projcet is complited
     function updateCompletness(index : number){
         const newProject = prop.projects[index];
         newProject.isCompleted = !newProject.isCompleted;

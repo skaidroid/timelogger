@@ -36,7 +36,7 @@ namespace Timelogger.Api.Tests
             var testProject = new Project
             {
                 Name = "e-conomic Interview",
-                TotalHours = 0,
+                TotalHours = TimeSpan.FromHours(0),
                 Deadline = temp.AddDays(-5),
                 IsCompleted = false
 
@@ -61,7 +61,7 @@ namespace Timelogger.Api.Tests
             var testProject = new Project
             {
                 Name = "",
-                TotalHours = 0,
+                TotalHours = TimeSpan.FromHours(0),
                 Deadline = temp.AddDays(5),
                 IsCompleted = false
 
@@ -89,7 +89,7 @@ namespace Timelogger.Api.Tests
             var testProject = new Project
             {
                 Name = "Project test",
-                TotalHours = 0,
+                TotalHours = TimeSpan.FromMinutes(0),
                 Deadline = temp.AddDays(5),
                 IsCompleted = false
             };

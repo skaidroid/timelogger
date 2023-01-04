@@ -4,5 +4,5 @@ export interface Timelog  {
     description: string;
     startTime: Date;
     endTime: Date;
-    totalTime: number;
+    totalTime: Date;
   };

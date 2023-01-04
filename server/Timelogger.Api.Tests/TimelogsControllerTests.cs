@@ -231,7 +231,7 @@ namespace Timelogger.Api.Tests
             {
                 Id = 1,
                 Name = "Project test",
-                TotalHours = 0,
+                TotalHours = TimeSpan.FromMinutes(0),
                 Deadline = temp.AddDays(5),
                 IsCompleted = false
             };
@@ -240,7 +240,7 @@ namespace Timelogger.Api.Tests
             {
                 Id = 2,
                 Name = "Project test2",
-                TotalHours = 0,
+                TotalHours = TimeSpan.FromMinutes(0),
                 Deadline = temp.AddDays(8),
                 IsCompleted = true
             };

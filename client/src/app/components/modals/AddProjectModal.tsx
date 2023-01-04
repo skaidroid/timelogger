@@ -30,7 +30,6 @@ export default function AddProjectModal(modal : ModalType) {
         }
        else {
             addProject(name, date).then((data) => {
-                console.log(typeof(data), 'type')
                 if(typeof(data) == 'object'){
                     modal.proj(data);
                     modal.toggle();             
